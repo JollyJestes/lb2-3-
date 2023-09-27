@@ -1,80 +1,73 @@
-﻿//197
+//197
 //Разделить массив на две части, поместив в первую элементы,
 //большие среднего арифметического их суммы,
-//а во вторую — меньшие (части не сортировать).
+//а во вторую — меньшие 
 
 class Program
 {
-    static void DivideArray(int[] arr, out List<int> greater, out List<int> lesser)
+    static void Main()
     {
+      
+        int[] array = new int[10];
+
+        // Находим среднее арифметическое
         int sum = 0;
-        foreach (int num in arr)
+        for (int i = 0; i < array.Length; i++)
         {
-            sum += num;
+            array[i] = new Random().Next(1, 20);
+            sum += array[i];
         }
-        double average = (double)sum / arr.Length;
+        int average = sum / array.Length;
 
-        greater = new List<int>();
-        lesser = new List<int>();
-
-        foreach (int num in arr)
+        // Разделяем массив
+        int firstPartStartIndex = 0;
+        int firstPartLength = 0;
+        int secondPartStartIndex = 0;
+        int secondPartLength = 0;
+        for (int i = 0; i < array.Length; i++)
         {
-            if (num > average)
+            if (array[i] > average)
             {
-                greater.Add(num);
+                firstPartLength++;
             }
             else
             {
-                lesser.Add(num);
+                secondPartLength++;
             }
         }
-    }
 
-    static void Main()
-    {
-        Console.Write("Введите длину массива: ");
-        if (int.TryParse(Console.ReadLine(), out int length) && length > 0)
+        
+        int[] firstPart = new int[firstPartLength];
+        int[] secondPart = new int[secondPartLength];
+
+   
+        for (int i = 0; i < array.Length; i++)
         {
-            int[] arr = new int[length];
-
-            Console.WriteLine("Введите элементы массива:");
-
-            for (int i = 0; i < length; i++)
+            if (array[i] > average)
             {
-                Console.Write($"Элемент {i + 1}: ");
-                if (int.TryParse(Console.ReadLine(), out int element))
-                {
-                    arr[i] = element;
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный ввод. Пожалуйста, введите целое число.");
-                    i--;
-                }
+                firstPart[firstPartStartIndex++] = array[i];
             }
-
-            List<int> greater;
-            List<int> lesser;
-
-            DivideArray(arr, out greater, out lesser);
-
-            Console.WriteLine("\nЭлементы больше среднего арифметического:");
-            foreach (int num in greater)
+            else
             {
-                Console.Write(num + " ");
-            }
-
-            Console.WriteLine("\nЭлементы меньше или равные среднему арифметическому:");
-            foreach (int num in lesser)
-            {
-                Console.Write(num + " ");
+                secondPart[secondPartStartIndex++] = array[i];
             }
         }
-        else
+
+      
+        Array.Sort(firstPart);
+        Array.Sort(secondPart);
+
+      
+        Console.WriteLine("Первая часть:");
+        foreach (int element in firstPart)
         {
-            Console.WriteLine("Некорректная длина массива.");
+            Console.WriteLine(element);
         }
-
-        Console.ReadLine();
+        Console.WriteLine();
+        Console.WriteLine("Вторая часть:");
+        foreach (int element in secondPart)
+        {
+            Console.WriteLine(element);
+        }
     }
 }
